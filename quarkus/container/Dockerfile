@@ -1,7 +1,7 @@
-FROM registry.access.redhat.com/ubi9 AS ubi-micro-build
+FROM cr.loongnix.cn/loongson/loongnix-server:8.4 AS ubi-micro-build
 
 ENV KEYCLOAK_VERSION 22.0.4
-ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
+ARG KEYCLOAK_DIST=keycloak-$KEYCLOAK_VERSION.tar.gz
 
 RUN dnf install -y tar gzip
 
@@ -19,7 +19,7 @@ RUN chmod -R g+rwX /opt/keycloak
 ADD ubi-null.sh /tmp/
 RUN bash /tmp/ubi-null.sh java-17-openjdk-headless glibc-langpack-en
 
-FROM registry.access.redhat.com/ubi9-micro
+FROM cr.loongnix.cn/loongson/loongnix-server:8.4
 ENV LANG en_US.UTF-8
 
 COPY --from=ubi-micro-build /tmp/null/rootfs/ /
